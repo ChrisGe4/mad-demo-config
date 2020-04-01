@@ -1,0 +1,12 @@
+options:
+  substitution_option: 'ALLOW_LOOSE'
+  env:
+    - CLOUDSDK_COMPUTE_ZONE=us-east4-a
+    - CLOUDSDK_CONTAINER_CLUSTER=cbd-mad-demo
+steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp','gs://mad-demo-k8s/*.yaml','.']
+  - name: gcr.io/$PROJECT_ID/skaffold:alpha
+    args: ['deploy', '-f=skaffold-backend.yaml']
+timeout: 400s
+tags: ['backend-server']
